@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "717761766975",
+    "firebase_url": "https://flythebird-e58c1.firebaseio.com",
+    "project_id": "flythebird-e58c1",
+    "storage_bucket": "flythebird-e58c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:717761766975:android:34484bd1c9b2d1baba3a8a",
+        "android_client_info": {
+          "package_name": "com.turhansit.games"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "717761766975-rafkq1tj74sirmt7lg8qs3uovtn1svf7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiSuNQVTZHfq0hgNUk_cCTlRW56qsqGdI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "717761766975-rafkq1tj74sirmt7lg8qs3uovtn1svf7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

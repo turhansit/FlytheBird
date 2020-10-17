@@ -36,9 +36,6 @@ class Dialog extends GameObject {
         wrapper.center.dy - 12.5, buttonWidth, buttonHeight);
     playButtonBox = RRect.fromRectAndRadius(playButton, Radius.circular(4));
 
-
-
-
     paint = Paint();
     titleText =
         TextComponent(game, 'Game Over!', 45.0, rectTop + padding, 0xff3D4852);
@@ -47,16 +44,14 @@ class Dialog extends GameObject {
 
     buttonText = TextComponent(
         game, 'Play again', 25.0, playButton.center.dy, 0xfffafafa);
-    creditsText = TextComponent(game, '------', 1.0,
-        wrapper.bottom - padding, 0xff6CB2EB);
+    creditsText = TextComponent(
+        game, '------', 1.0, wrapper.bottom - padding, 0xff6CB2EB);
 
     children.add(titleText);
     children.add(scoreText);
     children.add(buttonText);
     children.add(creditsText);
   }
-
-
 
   @override
   void render(Canvas c) {

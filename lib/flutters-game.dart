@@ -10,7 +10,8 @@ import 'package:flutters/components/level.dart';
 import 'package:flutters/components/obstacle.dart';
 import 'package:flutters/components/text.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:flutters/services/notification.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum GameState {
   playing,
@@ -18,9 +19,11 @@ enum GameState {
 }
 
 class FluttersGame extends Game {
+  final pushNotificationsServices _pns = pushNotificationsServices();
   GameState currentGameState = GameState.playing;
   Size viewport;
   Background skyBackground;
+
   Floor groundFloor;
   Level currentLevel;
   Bird birdPlayer;
@@ -28,26 +31,34 @@ class FluttersGame extends Game {
   TextComponent floorText;
   Dialog gameOverDialog;
 
+
   double tileSize;
   double birdPosY;
   double birdPosYOffset = 8;
-  bool isFluttering = false;
-  double flutterValue = 0;
+  bool isBirding = false;
+  double  birdValue = 0;
   double flutterIntensity = 20;
   double floorHeight = 250;
+
   // Game Score
   double currentHeight = 0;
   FluttersGame(screenDimensions) {
     resize(screenDimensions);
+
     skyBackground = Background(this, 0, 0, viewport.width, viewport.height);
     groundFloor = Floor(this, 0, viewport.height - floorHeight, viewport.width,
         floorHeight, 0xff48BB78);
     currentLevel = Level(this);
     birdPlayer = Bird(this, 0, birdPosY, tileSize, tileSize);
-    scoreText = TextComponent(this, '0', 30.0, 60);
+    scoreText = TextComponent(this, '0', 30.0, 60.0);
     floorText = TextComponent(
         this, 'Fly the bird!', 40.0, viewport.height - floorHeight / 2);
     gameOverDialog = Dialog(this);
+
+  }
+
+  Future handleStartUpLogic() async {
+    await _pns.initialise();
   }
 
   void resize(Size size) {
@@ -130,20 +141,20 @@ class FluttersGame extends Game {
   }
 
   void flutterHandler() {
-    if (isFluttering) {
-      flutterValue = flutterValue * 0.8;
-      currentHeight += flutterValue;
-      birdPlayer.setRotation(-flutterValue * birdPlayer.direction * 1.5);
+    if (isBirding) {
+      birdValue = birdValue * 0.8;
+      currentHeight += birdValue;
+      birdPlayer.setRotation(-birdValue * birdPlayer.direction * 1.5);
       // Cut the jump below 1 unit
-      if (flutterValue < 1) isFluttering = false;
+      if (birdValue < 1) isBirding = false;
     } else {
       // If max. fallspeed not yet reached
-      if (flutterValue < 15) {
-        flutterValue = flutterValue * 1.2;
+      if (birdValue < 15) {
+        birdValue = birdValue * 1.2;
       }
-      if (currentHeight > flutterValue) {
-        birdPlayer.setRotation(flutterValue * birdPlayer.direction * 2);
-        currentHeight -= flutterValue;
+      if (currentHeight > birdValue) {
+        birdPlayer.setRotation(birdValue * birdPlayer.direction * 2);
+        currentHeight -= birdValue;
         // stop jumping below floor
       } else if (currentHeight > 0) {
         currentHeight = 0;
@@ -156,8 +167,8 @@ class FluttersGame extends Game {
     if (currentGameState != GameState.gameOver) {
       // Make the bird flutter
       birdPlayer.startFlutter();
-      isFluttering = true;
-      flutterValue = flutterIntensity;
+      isBirding = true;
+      birdValue = flutterIntensity;
       return;
     }
     if (gameOverDialog.playButton.contains(d.globalPosition)) {
@@ -168,5 +179,5 @@ class FluttersGame extends Game {
   void onTapUp(TapUpDetails d) {
     birdPlayer.endFlutter();
   }
-
 }
+
