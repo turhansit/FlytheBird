@@ -18,34 +18,36 @@ class Level {
     double obstacleHeight;
     double posX;
     double posY;
-    for (int i = 2; i < 200; i++) {
+    for (int i = 1; i < 200; i++) {
       bool isLeft = rng.nextBool();
       bool isMoving = false;
       int movingRng = rng.nextInt(5);
 
-      if (movingRng == 4) {
+      if (movingRng > 2) {
         obstacleWidth = (rng.nextDouble() * (game.viewport.width * 0.2)) +
-            (game.viewport.width * 0.3);
+            (game.viewport.width * 0.2);
         obstacleHeight = game.viewport.height / game.tileSize * 1.5;
-        isLeft = true;
+         isLeft = true;
         isMoving = true;
       } else {
         obstacleWidth =
-            (rng.nextDouble() * game.tileSize / 2) + game.viewport.width / 40;
+            (rng.nextDouble() * game.tileSize / 2) + game.viewport.width / 20;
         obstacleHeight =
             (rng.nextDouble() * game.tileSize) + game.viewport.height / 10;
+       // isLeft = true;
+        //isMoving = true;
       }
       // Position Obstacles
       posY = ((-i * 300) + game.viewport.height);
       if (isLeft) {
-        posX = 0;
+        posX = 120;
       } else {
         posX = game.viewport.width - obstacleWidth;
       }
       obstacle =
           Obstacle(game, posX, posY, obstacleWidth, obstacleHeight, isMoving);
       // Add obstacles to level
-      levelObstacles.add(obstacle);
+        levelObstacles.add(obstacle);
     }
   }
 }
